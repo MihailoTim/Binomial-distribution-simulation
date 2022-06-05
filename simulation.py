@@ -1,4 +1,11 @@
+from ast import Pow
 import random
+
+def factorial(n):
+    if(n==0):
+        return 1
+    else:
+        return n*factorial(n-1)
 
 while True:
     try:
@@ -49,7 +56,7 @@ while True:
         continue
 
 
-numberOfHits = [0 for i in range(11)]
+numberOfHits = [0 for i in range(numberOfShots+1)]
 
 totalNumberOfExperiments = numberOfSimulations * numberOfExperiments
 
@@ -64,7 +71,7 @@ for simulation in range(numberOfSimulations):
 
 expectedNumberOfHits = 0
 
-for i in range(0,11):
+for i in range(0,numberOfShots+1):
     expectedNumberOfHits += i * numberOfHits[i]/totalNumberOfExperiments
     txt = "Number of hits: {:<8} Frequency: {:<8} Probability: {:.5f}"
     print(txt.format(i, numberOfHits[i], numberOfHits[i]/totalNumberOfExperiments))
@@ -73,3 +80,12 @@ print("\nExcpected number of hits: " + str(expectedNumberOfHits).format(":.6f"))
 
 
 
+print("\nNow showing results from binomial distribution formula. Delta shows absolute difference between calculated and simulated values\n")
+
+#don't mind the efficency of calculating factorial or power 
+#that was not the point of this simulation
+
+for i in range(0,numberOfShots+1):
+    probability = factorial(numberOfShots)/(factorial(numberOfShots-i) * factorial(i)) * pow(hitProbability, i) * pow(1-hitProbability, numberOfShots-i)
+    txt = "Number of hits: {:<8} Probability: {:.5f}         Delta {:.5f}"
+    print(txt.format(i, probability, abs(probability - numberOfHits[i]/totalNumberOfExperiments)))
